@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="dark_green">#2E8B57</color>
+    <color name="dark_sea_green">#8FBC8F</color>
+    <color name="medium_sea_green">#3CB371</color>
+    <color name="light_sea_green">#20B2AA</color>
+    <color name="sky_blue">#87CEFA</color>
+    <color name="dark_blue">#517b96</color>
+</resources>

@@ -1,0 +1,147 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_movie_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_sea_green"
+                android:padding ="@dimen/view_padding"
+                style="@style/text_style_large_condensed"/>
+
+        </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/view_padding"
+        android:paddingRight="@dimen/view_padding">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/img_movie_backgr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.application.chetna_priya.moviemagic.SquaredImageView
+                android:id="@+id/img_movie_image"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/img_movie_backgr"
+                android:layout_marginLeft="@dimen/view_padding"
+                android:layout_marginTop="-40dp"
+                />
+
+            <TextView
+                android:id="@+id/tv_movie_release_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/img_movie_image"
+                android:layout_below="@+id/img_movie_backgr"
+                android:paddingTop="@dimen/padding_between_text"
+                android:paddingLeft="@dimen/padding_between_text"
+                style="@style/text_style_medium_condensed"/>
+
+
+            <TextView
+                android:id="@+id/tv_movie_runtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_movie_release_date"
+                android:layout_toRightOf="@+id/img_movie_image"
+                android:paddingTop="@dimen/padding_between_text"
+                android:paddingLeft="@dimen/padding_between_text"
+                android:textColor="@android:color/black"
+                style="@style/text_style_medium_condensed"/>
+
+            <TextView
+                android:id="@+id/tv_movie_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_movie_runtime"
+                android:layout_toRightOf="@+id/img_movie_image"
+                android:paddingTop="@dimen/padding_between_text"
+                android:paddingLeft="@dimen/padding_between_text"
+                android:textColor="@android:color/black"
+                style="@style/text_style_medium_condensed"/>
+
+
+
+        </RelativeLayout>
+
+     <!--   <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="60">
+
+            <com.application.chetna_priya.moviemagic.SquaredImageView
+                android:id="@+id/img_movie_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="-30dp"
+                android:background="@drawable/placeholder"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="40"
+            android:orientation="vertical"
+            android:padding="@dimen/view_padding">
+
+            <TextView
+                android:id="@+id/tv_movie_release_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/text_style_medium_condensed"/>
+
+            <TextView
+                android:id="@+id/tv_movie_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/padding_between_text"
+                android:textColor="@android:color/black"
+                style="@style/text_style_medium_condensed"/>
+
+
+        </LinearLayout>-->
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/view_padding"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_movie_plot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/text_style_medium_condensed"
+                /><!--
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:paddingTop="@dimen/padding_between_text"
+                android:background="@android:color/black"/>-->
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
