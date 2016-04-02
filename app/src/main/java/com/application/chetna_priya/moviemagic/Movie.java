@@ -1,31 +1,40 @@
 package com.application.chetna_priya.moviemagic;
 
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by chetna_priya on 3/7/2016.
  */
-public class Movie
+public class Movie implements Parcelable
 {
 
     private final String BASE_EXT = "http://image.tmdb.org/t/p";
-    private String movie_id;
+    private int movie_id;
     private String poster_path;
     private String title;
     private String releaseDate;
-    private String voteAverage;
+    private long voteAverage;
     private String plotSynopsis;
     private String backdrop_path;
-    private String duration;
+    private int duration;
+    private final int MOVIE_POSTER = 0;
+    private final int MOVIE_BACKDROP = 1;
+    private static boolean isMarkedFav = false;
 
-    public Movie(String movie_id, String poster_path)
+
+    public Movie(int movie_id, String poster_path)
     {
         this.movie_id = movie_id;
         this.poster_path = poster_path;
     }
 
-    public Movie(String movie_id, String poster_path, String backdrop_path, String title, String releaseDate,
-                 String voteAverage, String plotSynopsis, String duration)
+    public Movie(int movie_id, String poster_path, String backdrop_path, String title, String releaseDate,
+                 long voteAverage, String plotSynopsis, int duration)
     {
         this.movie_id = movie_id;
         this.poster_path = poster_path;
@@ -37,24 +46,49 @@ public class Movie
         this.duration = duration;
     }
 
-    public String getMovie_id() {
+    protected Movie(Parcel in) {
+        movie_id = in.readInt();
+        poster_path = in.readString();
+        title = in.readString();
+        releaseDate = in.readString();
+        voteAverage = in.readLong();
+        plotSynopsis = in.readString();
+        backdrop_path = in.readString();
+        duration = in.readInt();
+    }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
+
+    public int getMovie_id() {
         return movie_id;
     }
 
     public Uri getMovie_uri() {
         return Uri.parse(BASE_EXT).buildUpon()
-                .appendEncodedPath(getPrefferedSize())
+                .appendEncodedPath(getPrefferedSize(MOVIE_POSTER))
                 .appendEncodedPath(poster_path).build();
     }
 
     public Uri get_movie_backdrop_path_Uri() {
         return Uri.parse(BASE_EXT).buildUpon()
-                .appendEncodedPath(getPrefferedSize())
+                .appendEncodedPath(getPrefferedSize(MOVIE_BACKDROP))
                 .appendEncodedPath(backdrop_path).build();
     }
 
-    private String getPrefferedSize() {
+    private String getPrefferedSize(int imgType) {
         //Possible Values : "w92", "w154", "w185", "w342", "w500", "w780", or "original"
+        if(imgType == MOVIE_BACKDROP)
+            return  "original";
         return "w185";
     }
 
@@ -66,7 +100,7 @@ public class Movie
         return releaseDate;
     }
 
-    public String getVoteAverage() {
+    public long getVoteAverage() {
         return voteAverage;
     }
 
@@ -74,7 +108,44 @@ public class Movie
         return plotSynopsis;
     }
 
-    public String getDuration() {
+    public int getDuration() {
         return duration;
+    }
+
+    public String getPoster_path() {
+        return poster_path;
+    }
+
+    public String getBackdrop_path() {
+        return backdrop_path;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(movie_id);
+        dest.writeString(poster_path);
+        dest.writeString(title);
+        dest.writeString(releaseDate);
+        dest.writeLong(voteAverage);
+        dest.writeString(plotSynopsis);
+        dest.writeString(backdrop_path);
+        dest.writeInt(duration);
+    }
+
+    public boolean isMarkedFav() {
+        return isMarkedFav;
+    }
+
+    public void markFav() {
+        isMarkedFav = true;
+    }
+
+    public void notFav() {
+        isMarkedFav = false;
     }
 }

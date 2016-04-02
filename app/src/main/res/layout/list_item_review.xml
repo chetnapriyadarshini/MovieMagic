@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_review_content"
+            android:layout_width="0dp"
+            android:layout_weight="90"
+            android:layout_height="wrap_content"
+            style="@style/text_style_medium_condensed"
+            android:layout_marginBottom="@dimen/padding_between_text"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_keyboard_arrow_right_black"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_author_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding_between_text"
+            android:textStyle="italic"
+            style="@style/text_style_small_light"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="@dimen/padding_between_text"
+            android:layout_marginBottom="@dimen/padding_between_text"
+            android:background="@android:color/darker_gray"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -25,4 +25,9 @@
         <item name="android:textAppearance">?android:textAppearanceMedium</item>
     </style>
 
+    <style name="text_style_small_light" parent="AppTheme">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textAppearance">?android:textAppearanceSmall</item>
+    </style>
+
 </resources>

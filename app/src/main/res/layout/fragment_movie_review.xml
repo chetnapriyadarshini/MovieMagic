@@ -1,0 +1,51 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context="com.application.chetna_priya.moviemagic.MovieReviewFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_reviews"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:padding="@dimen/view_padding"
+        style="@style/text_style_medium_condensed"
+        android:gravity="center_horizontal"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginLeft="@dimen/padding_between_text"
+        android:layout_marginRight="@dimen/padding_between_text"
+        android:background="@color/very_light_grey"/>
+
+
+    <TextView
+        android:id="@+id/tv_movie_review_not_available"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/text_style_medium_condensed"
+        android:textColor="@android:color/black"
+        android:text="@string/review_not_available"
+        android:padding="@dimen/view_padding"
+        android:layout_marginTop="@dimen/padding_between_text"
+        android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:id="@+id/linear_view_reviews"
+        android:orientation="vertical"
+        android:padding="@dimen/view_padding"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></LinearLayout>
+</LinearLayout>
+</ScrollView>

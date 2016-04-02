@@ -1,20 +1,20 @@
 package com.application.chetna_priya.moviemagic;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity implements MovieFragment.CallBack {
+public class MainActivity extends AppCompatActivity implements MovieRecyclerGridAdapter.AdapterCallback {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DFTAG = "dftag";
     private static boolean mTwoPane = false;
     private static boolean inflateFragment = false;
-    private static Uri defaultUri;
+    private static int mDefaultId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +35,10 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
                 * We are doing this because we want to use the one pane layout for one
                 * pane 7 inch tabs*/
                 Log.d(LOG_TAG, "Device was rotated to landscape mode for 7 inch tab");
-                MovieDetailFragment movieDetailFragment = MovieDetailFragment.newInstance(defaultUri);
+                MovieDetailFragment movieDetailFragment = MovieDetailFragment.newInstance(mDefaultId);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.movie_detail_container, movieDetailFragment, DFTAG)
-                        .commitAllowingStateLoss();
+                        .commit();
             }
         }else {
             mTwoPane = false;
@@ -71,18 +71,19 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
     * Called when a specific movie is selected by the user
     * */
     @Override
-    public void onItemSelected(Uri movieUri) {
+    public void onItemSelected(int movieId) {
         if(mTwoPane)
         {
             /* If a two pane layout simply replace the previous detail movies fragment*/
-            MovieDetailFragment movieDetailFragment = MovieDetailFragment.newInstance(movieUri);
+            MovieDetailFragment movieDetailFragment = MovieDetailFragment.newInstance(movieId);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.movie_detail_container, movieDetailFragment, DFTAG)
                     .commit();
         }else{
             /* If a one pane layout launch Movie Detail Activity*/
-            Intent detailIntent = new Intent(this, MovieDetailActivity.class);
-            detailIntent.setData(movieUri);
+            Intent detailIntent;
+            detailIntent = new Intent(this, MovieDetailsTab.class);
+            detailIntent.putExtra(Constants.MOVIE_ID, movieId);
             startActivity(detailIntent);
         }
     }
@@ -94,13 +95,14 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
     * selection has been made by the user
     * */
     @Override
-    public void initMovieDetailFragment(Uri movieUri) {
-        defaultUri = movieUri;//save this uri will be used in case this is a 7 inch tab(one pane in portrait two pane in landscape)
+    public void initMovieDetailFragment(int movieId) {
+        mDefaultId = movieId;//save this uri will be used in case this is a 7 inch tab(one pane in portrait two pane in landscape)
         if(mTwoPane && inflateFragment)
         {
             Log.d(LOG_TAG, "Inflate detail fragment here for tablet");
             inflateFragment = false;
-            MovieDetailFragment movieDetailFragment = MovieDetailFragment.newInstance(movieUri);
+            MovieDetailFragment movieDetailFragment = MovieDetailFragment.
+                    newInstance(movieId);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.movie_detail_container, movieDetailFragment, DFTAG)
                     .commitAllowingStateLoss();

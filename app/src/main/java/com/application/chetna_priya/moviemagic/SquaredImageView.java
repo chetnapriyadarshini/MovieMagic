@@ -2,6 +2,7 @@ package com.application.chetna_priya.moviemagic;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 
 /** An image view which always remains square with respect to its width. */

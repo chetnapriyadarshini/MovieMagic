@@ -22,7 +22,6 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d(LOG_TAG, "CALLED ON CREATEEEEEEEE");
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.pref_general);
         bindPreferenceSummarytoValue(findPreference(getString(R.string.pref_sort_by_key)));

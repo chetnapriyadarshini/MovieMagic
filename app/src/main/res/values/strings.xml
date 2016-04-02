@@ -4,20 +4,50 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_settings_acitvity">SettingsAcitvity</string>
     <string name="pref_sort_by_title">Sort By</string>
-    <string name="option_popularity">Popularity</string>
     <string name="pref_sort_by_key" translatable = "false">sortby</string>
-    <string name="pref_default_sorting_option">popularity</string>
+    <string name="pref_default_sorting_option">popular</string>
     <string name="pref_rating">rating</string>
+    <string name="pref_favorites">favorites</string>
     <string name="pref_summary_sortOptions">Popularity</string>
     <string name="sort_by_title">Sort By</string>
     <array name="entries_sort_options">
         <item>Popularity</item>
         <item>Rating</item>
+        <item>Favorites</item>
     </array>
     <array name="values_sort_options">
-        <item>popularity</item>
-        <item>rating</item>
+        <item>popular</item>
+        <item>top_rated</item>
+        <item>favorites</item>
     </array>
     <string name="title_activity_movie_detail">MovieDetail</string>
+    <string name="minutes">mins</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_movie_details_fragment">MovieDetailsFragment</string>
+
+    <string name="tab_overview">Overview</string>
+    <string name="tab_reviews">Reviews</string>
+    <string name="trailer">Trailer</string>
+    <string name="title_trailers">Trailers</string>
+    <string name="title_reviews">Reviews</string>
+    <string name="author">Author</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="review_not_available">There are no reviews available for this movie.</string>
+    <string name="trailer_not_available">There are no trailers available for this movie.</string>
+    <string name="something_went_wrong">Addition unsucessful please try again in sometime</string>
+    <string name="added_to_fav_succesfully">Movie added to favorites successfully, view it any time by selecting fav movies in menu</string>
+    <string name="movie_already_marked_as_fav">This movie is already added to your fav list</string>
+    <string name="add_to_fav">Mark as\n Favorite</string>
+    <string name="remove_from_fav">Remove from\n Favorite</string>
+    <string name="content_authority">com.application.chetna_priya.moviemagic</string>
+    <string name="movie_could_not_added">Movie could not be added. Please try again in sometime.</string>
+    <string name="title_overview">Overview:</string>
+    <string name="hours">hours</string>
+    <string name="hour">hour</string>
+    <string name="minute">minute</string>
+    <string name="yes">YES</string>
+    <string name="back">BACK</string>
 
 </resources>

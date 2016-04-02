@@ -1,14 +1,12 @@
 package com.application.chetna_priya.moviemagic;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MovieDetailActivity extends AppCompatActivity {
+public class MovieDetailActivity extends AppCompatActivity implements MovieDetailFragment.CallBack{
 
     private static final String LOG_TAG = MovieDetailActivity.class.getSimpleName();
 
@@ -17,10 +15,13 @@ public class MovieDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
         if(savedInstanceState == null) {
-            Uri uri = getIntent().getData();
-            Log.d(LOG_TAG, "URI RECEIVED:   "+uri);
+            int movieId = getIntent().getIntExtra(Constants.MOVIE_ID,0);
+            /*
+            We are using this activity instead of tabbed activity
+            this means reviews not available, movie not released yet
+             */
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.movie_detail_fragment, MovieDetailFragment.newInstance(uri))
+                    .add(R.id.movie_detail_fragment, MovieDetailFragment.newInstance(movieId))
                     .commit();
         }
     }
@@ -42,5 +43,10 @@ public class MovieDetailActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void setActionBarTitle(String movieTitle) {
+        getSupportActionBar().setTitle(movieTitle);
     }
 }
