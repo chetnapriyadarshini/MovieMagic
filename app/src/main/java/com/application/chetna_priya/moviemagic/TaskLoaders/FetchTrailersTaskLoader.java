@@ -18,9 +18,9 @@ import java.util.ArrayList;
  */
 public class FetchTrailersTaskLoader extends AsyncTaskLoader<ArrayList<String>> {
     private Context mContext;
-    private String mMovieId;
+    private int mMovieId;
 
-    public FetchTrailersTaskLoader(Context context, String movieId) {
+    public FetchTrailersTaskLoader(Context context, int movieId) {
         super(context);
         this.mContext = context;
         this.mMovieId = movieId;
@@ -42,6 +42,8 @@ public class FetchTrailersTaskLoader extends AsyncTaskLoader<ArrayList<String>> 
     public ArrayList<String> loadInBackground() {
         Uri movieUri = Utility.buildVideoUriWithMovieId(mMovieId);
         String movieJsonString = FetchDataOverNetwork.fetchMovieData(mContext, movieUri);
+        if(movieJsonString == null)
+            return null;
         try {
             return getMovieTrailerFromJson(movieJsonString);
         } catch (JSONException e) {

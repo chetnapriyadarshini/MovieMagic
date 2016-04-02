@@ -21,10 +21,10 @@ import java.util.ArrayList;
 public class FetchReviewsTaskLoader extends AsyncTaskLoader<ArrayList<Review>> {
 
     private static final String LOG_TAG = FetchReviewsTaskLoader.class.getSimpleName();
-    private String mMovieId ;
+    private int mMovieId ;
     private Context mContext;
 
-    public FetchReviewsTaskLoader(Context context, String movieId) {
+    public FetchReviewsTaskLoader(Context context, int movieId) {
         super(context);
         this.mContext = context;
         this.mMovieId = movieId;
@@ -46,6 +46,8 @@ public class FetchReviewsTaskLoader extends AsyncTaskLoader<ArrayList<Review>> {
     public ArrayList<Review> loadInBackground() {
         Uri movieUri = Utility.buildReviewsUriWithMovieId(mMovieId);
         String movieJsonString = FetchDataOverNetwork.fetchMovieData(mContext, movieUri);
+        if(movieJsonString ==null)
+            return null;
         try {
             return getMovieReviewFromJson(movieJsonString);
         } catch (JSONException e) {
