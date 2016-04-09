@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.0"
 
     ext {
-        supportLibVersion = '24.0.0-alpha1'  // variable that can be referenced to keep support libs consistent
+        supportLibVersion = '23.2.1'  // variable that can be referenced to keep support libs consistent
     }
 
     defaultConfig {
@@ -33,10 +33,13 @@ android {
 
     dependencies {
         compile fileTree(dir: 'libs', include: ['*.jar'])
-        compile 'com.android.support:appcompat-v7:24.0.0-alpha1'
-        compile "com.android.support:design:24.0.0-alpha1"
+        compile 'com.android.support:appcompat-v7:23.2.1'
+        compile "com.android.support:design:23.2.1"
         compile 'com.squareup.picasso:picasso:2.5.2'
         compile 'com.jakewharton:butterknife:7.0.1'
-        compile 'com.android.support:recyclerview-v7:24.0.0-alpha1'
+        compile 'com.android.support:recyclerview-v7:23.2.1'
+        compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
+        compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
+        compile 'com.squareup.okhttp3:okhttp:3.2.0'
 
     }

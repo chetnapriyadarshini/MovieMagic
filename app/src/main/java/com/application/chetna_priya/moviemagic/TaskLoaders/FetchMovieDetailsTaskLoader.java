@@ -50,6 +50,7 @@ public class FetchMovieDetailsTaskLoader extends AsyncTaskLoader<Movie> {
                 Cursor cursor = Utility.queryByMovieId(mContext, mMovieId);
                 if(cursor == null || cursor.getCount() < 1)
                     return null;
+                cursor.moveToFirst();
                 return new Movie(cursor.getInt(MovieEntry.COL_INDEX_MOVIE_ID),
                         cursor.getString(MovieEntry.COL_INDEX_MOVIE_POSTER_PATH),
                         cursor.getString(MovieEntry.COL_INDEX_BACKDROP_PATH),

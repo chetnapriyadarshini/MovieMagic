@@ -2,49 +2,90 @@ package com.application.chetna_priya.moviemagic;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
-public class MainActivity extends AppCompatActivity implements MovieRecyclerGridAdapter.AdapterCallback {
+public class MainActivity extends AppCompatActivity implements MovieRecyclerGridAdapter.AdapterCallback,
+    Favorite_dialog_fragment.DialogInterface, MovieDetailFragment.CallBack{
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-    private static final String DFTAG = "dftag";
+    private static final String DFTAG = "detail_fragment_tag";
+    private static final String FDTAG = "favorite_dialog_tag";
     private static boolean mTwoPane = false;
     private static boolean inflateFragment = false;
-    private static int mDefaultId;
+    private Bundle savedInstanceState;
+    private static View prevView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        if(findViewById(R.id.movie_detail_container) != null)/*This will be applicable in cases of tabs 10 inch and 7inch landscape*/
+        if(checkForInternetAndDatabase()) {
+            this.savedInstanceState = savedInstanceState;
+            initializeMovieFrgamentAndVars();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(getSupportFragmentManager().findFragmentByTag(FDTAG) == null)
         {
+            checkForInternetAndDatabase();
+        }else if(this.findViewById(android.R.id.content) == null)
+            initializeMovieFrgamentAndVars();
+    }
+
+    public void initializeMovieFrgamentAndVars() {
+        setContentView(R.layout.activity_main);
+        if (findViewById(R.id.movie_detail_container) != null)/*This will be applicable in cases of tabs 10 inch*/ {
             mTwoPane = true;
-            if(savedInstanceState == null)
-            {
+            if (savedInstanceState == null) {
                 inflateFragment = true;
                 Log.d(LOG_TAG, "SAVED INSTANCE NULL INFLATE DETAIL FRAGMENT");
             }
-            else if(getSupportFragmentManager().findFragmentByTag(DFTAG) == null)
-            {
-                /*This condition applies in case this activity is launched in 7inch tab in portrait
-                * mode and switched to landscape mode before the user makes any selection
-                * We are doing this because we want to use the one pane layout for one
-                * pane 7 inch tabs*/
-                Log.d(LOG_TAG, "Device was rotated to landscape mode for 7 inch tab");
-                MovieDetailFragment movieDetailFragment = MovieDetailFragment.newInstance(mDefaultId);
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.movie_detail_container, movieDetailFragment, DFTAG)
-                        .commit();
-            }
-        }else {
+        } else {
             mTwoPane = false;
         }
     }
 
+    public void showMyDialog(int dialog_type) {
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment prev = getSupportFragmentManager().findFragmentByTag(FDTAG);
+        if (prev != null) {
+            ft.remove(prev);
+        }
+
+        ft.addToBackStack(null);
+
+        // Create and show the dialog.
+        Favorite_dialog_fragment newFragment = Favorite_dialog_fragment.
+                newInstance(dialog_type);
+        newFragment.show(ft, FDTAG);
+    }
+
+    private boolean checkForInternetAndDatabase() {
+        if(Utility.getSortingChoice(this).equals(getResources().getString(R.string.pref_favorites)))
+        {
+            if(Utility.isDatabaseEmpty(this)) {
+                showMyDialog(Constants.DIALOG_DATABASE_EMPTY);
+                return false;
+            }
+            return true;
+        }else if(!(Utility.isNetworkAvailable(this)))
+        {
+            showMyDialog(Constants.DIALOG_NO_INTERNET);
+            return false;
+        }
+        return true;
+    }
 
 
     @Override
@@ -71,9 +112,10 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerGrid
     * Called when a specific movie is selected by the user
     * */
     @Override
-    public void onItemSelected(int movieId) {
+    public void onItemSelected(ImageView posterView, int movieId) {
         if(mTwoPane)
         {
+            setSelected(posterView);
             /* If a two pane layout simply replace the previous detail movies fragment*/
             MovieDetailFragment movieDetailFragment = MovieDetailFragment.newInstance(movieId);
             getSupportFragmentManager().beginTransaction()
@@ -82,10 +124,20 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerGrid
         }else{
             /* If a one pane layout launch Movie Detail Activity*/
             Intent detailIntent;
-            detailIntent = new Intent(this, MovieDetailsTab.class);
+            detailIntent = new Intent(this, MovieDetailsTabActivity.class);
             detailIntent.putExtra(Constants.MOVIE_ID, movieId);
             startActivity(detailIntent);
         }
+    }
+
+    private void setSelected(ImageView posterView) {
+        if(prevView != null)
+        {
+            prevView.setPadding(0,0,0,0);
+        }
+        prevView = posterView;
+        posterView.setBackgroundColor(getResources().getColor(R.color.dark_green));
+        posterView.setPadding(5, 5, 5, 5);
     }
 
     /*
@@ -96,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerGrid
     * */
     @Override
     public void initMovieDetailFragment(int movieId) {
-        mDefaultId = movieId;//save this uri will be used in case this is a 7 inch tab(one pane in portrait two pane in landscape)
         if(mTwoPane && inflateFragment)
         {
             Log.d(LOG_TAG, "Inflate detail fragment here for tablet");
@@ -107,5 +158,20 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerGrid
                     .replace(R.id.movie_detail_container, movieDetailFragment, DFTAG)
                     .commitAllowingStateLoss();
         }
+    }
+
+    @Override
+    public void setMovieAsFav(boolean isFav) {
+
+    }
+
+    @Override
+    public void makeText(int stringRes) {
+
+    }
+
+    @Override
+    public void setActionBarTitle(String movieTitle) {
+        getSupportActionBar().setTitle(movieTitle);
     }
 }

@@ -44,16 +44,13 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
         mContext = context;
         mCursor = cursor;
         mDataValid = cursor != null;
-        mRowIdColumn = mDataValid ? mCursor.getColumnIndex(FavMovieContract.MovieEntry.COLUMN_MOVIE_ID) : -1;
+        mRowIdColumn = mDataValid ? mCursor.getColumnIndex(FavMovieContract.MovieEntry._ID) : -1;
         mDataSetObserver = new NotifyingDataSetObserver();
         if (mCursor != null) {
             mCursor.registerDataSetObserver(mDataSetObserver);
         }
     }
 
-    public Cursor getCursor() {
-        return mCursor;
-    }
 
     @Override
     public int getItemCount() {
@@ -66,7 +63,7 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
     @Override
     public long getItemId(int position) {
         if (mDataValid && mCursor != null && mCursor.moveToPosition(position)) {
-            return mCursor.getLong(mRowIdColumn);
+            return mCursor.getInt(mRowIdColumn);
         }
         return 0;
     }

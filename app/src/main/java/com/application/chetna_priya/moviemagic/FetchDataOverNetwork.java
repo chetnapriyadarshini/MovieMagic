@@ -21,7 +21,6 @@ public class FetchDataOverNetwork
 
     public static String fetchMovieData(Context context, Uri uri)
     {
-        //TODO use retrofit lib ti fetch
         HttpURLConnection httpURLConnection;
         BufferedReader bufferedReader;
 

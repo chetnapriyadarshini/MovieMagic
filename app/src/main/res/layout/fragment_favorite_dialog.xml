@@ -41,8 +41,7 @@
             android:padding="@dimen/padding_for_button_in_dialog"
             android:text="@string/yes"
             android:textColor="@color/dark_blue"
-            style="@style/text_style_large_condensed"
-            android:onClick="onClick"/>
+            style="@style/text_style_large_condensed"/>
 
         <TextView
             android:id="@+id/tv_dialog_back"
@@ -52,7 +51,6 @@
             android:padding="@dimen/padding_for_button_in_dialog"
             android:text="@string/back"
             android:textColor="@color/dark_blue"
-            android:onClick="onClick"
             style="@style/text_style_large_condensed"/>
     </LinearLayout>
 

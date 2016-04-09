@@ -3,6 +3,9 @@
      android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:paddingLeft="@dimen/view_padding"
+    android:paddingRight="@dimen/view_padding"
+    android:paddingTop="@dimen/view_padding"
     >
 
     <LinearLayout
@@ -42,7 +45,6 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginTop="@dimen/padding_between_text"
-            android:layout_marginBottom="@dimen/padding_between_text"
             android:background="@android:color/darker_gray"/>
 
     </LinearLayout>

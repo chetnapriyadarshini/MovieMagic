@@ -3,6 +3,7 @@
     package="com.application.chetna_priya.moviemagic" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -32,7 +33,7 @@
         </activity>
 
         <activity
-            android:name=".MovieDetailsTab"
+            android:name=".MovieDetailsTabActivity"
             android:label="@string/title_activity_movie_details_fragment"
             android:parentActivityName=".MainActivity" >
             <meta-data

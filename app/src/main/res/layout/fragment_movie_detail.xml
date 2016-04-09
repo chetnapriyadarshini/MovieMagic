@@ -35,15 +35,7 @@
                 android:layout_alignBottom="@+id/img_movie_backgr"
                 android:layout_alignRight="@+id/img_movie_backgr"
                 app:elevation="4dp"/>
-<!--
-            <com.application.chetna_priya.moviemagic.SquaredImageView
-                android:id="@+id/img_movie_image"
-                android:layout_width="140dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/img_movie_backgr"
-                android:layout_marginLeft="@dimen/view_padding"
-                android:layout_marginTop="-40dp"
-                />-->
+
 
             <TextView
                 android:layout_width="wrap_content"
@@ -92,45 +84,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
-            <TextView
-                android:id="@+id/tv_trailer_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                style="@style/text_style_medium_condensed"
-                android:textColor="@android:color/black"
-                android:text="@string/title_trailers"
-                android:padding="@dimen/view_padding"/>
-
-            <View
+            <FrameLayout
+                android:id="@+id/trailer_fragment"
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginLeft="@dimen/padding_between_text"
-                android:layout_marginRight="@dimen/padding_between_text"
-                android:background="@color/very_light_grey"/>
+                android:layout_height="wrap_content">
 
-
-            <LinearLayout
-                android:id="@+id/linear_view_trailer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="@dimen/view_padding"
-                android:layout_below="@+id/tv_trailer_title"/>
-
-
-            <TextView
-                android:id="@+id/tv_movie_trailer_not_available"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/trailer_not_available"
-                android:padding="@dimen/view_padding"
-                android:layout_marginTop="@dimen/padding_between_text"
-                android:visibility="gone"
-                />
-
+            </FrameLayout>
 
             <View
                 android:id="@+id/view_divider"

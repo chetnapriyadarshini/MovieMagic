@@ -82,20 +82,15 @@ public class FetchReviewsTaskLoader extends AsyncTaskLoader<ArrayList<Review>> {
     private String formatReviewContent(String review_content)
     {
         /* We only display small review content with a link to complete content */
-        final int num_lines = 2;
-        String[] reviewArray = review_content.split("\n");//"[?!.]($|\\s)"
-        String content = "";
-        int index = num_lines;
+      //  Log.d(LOG_TAG, "REVIEW: "+review_content);
+        int num_words = 200;
+        if(review_content.length()-1 < num_words)
+            num_words = review_content.length()-1;
 
-        if(reviewArray.length < num_lines)
-            index = reviewArray.length-1;
-
-
-        while(index >= 0) {
-            content = content.concat(reviewArray[index]);
-            index--;
-        }
-        Log.d(LOG_TAG, "REVIEW FOUND: "+content);
-        return  content;
+        String content = review_content.substring(0, num_words);
+        content = content.substring(0, content.lastIndexOf(" "));
+        content = content.concat("..");
+    //    Log.d(LOG_TAG, "REVIEW AFTER FORMATTING: "+content);
+        return content;
     }
 }

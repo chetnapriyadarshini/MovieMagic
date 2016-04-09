@@ -1,5 +1,6 @@
 package com.application.chetna_priya.moviemagic;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;

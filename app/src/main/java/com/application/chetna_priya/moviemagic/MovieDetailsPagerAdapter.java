@@ -1,5 +1,6 @@
 package com.application.chetna_priya.moviemagic;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -14,6 +15,8 @@ public class MovieDetailsPagerAdapter extends FragmentPagerAdapter {
     private static final String LOG_TAG = MovieDetailsPagerAdapter.class.getSimpleName();
     private static Context mContext;
     int movieId;
+    MovieDetailFragment movieDetailFragment;
+    MovieReviewFragment movieReviewFragment;
 
     public MovieDetailsPagerAdapter(FragmentManager fm, Context context, int movieID) {
         super(fm);
@@ -23,16 +26,17 @@ public class MovieDetailsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+
         switch (position)
         {
             case Constants.TAB_OVERVIEW:
-                /*We are using a tabbed activity the reviews must be available
-                *This means movie is released
-                * We pass true as the second arguement
-                 */
-                return MovieDetailFragment.newInstance(movieId);
+                if(movieDetailFragment == null)
+                    movieDetailFragment = MovieDetailFragment.newInstance(movieId);
+                return movieDetailFragment;
             case Constants.TAB_REVIEWS:
-                return MovieReviewFragment.newInstance(movieId);
+                if(movieReviewFragment == null)
+                    movieReviewFragment = MovieReviewFragment.newInstance(movieId);
+                return movieReviewFragment;
         }
         return null;
     }
@@ -42,9 +46,10 @@ public class MovieDetailsPagerAdapter extends FragmentPagerAdapter {
         return Constants.TOTAL_TABS;
     }
 
+
+
     @Override
     public CharSequence getPageTitle(int position) {
-        Locale l = Locale.getDefault();
         switch (position) {
             case Constants.TAB_OVERVIEW:
                 return mContext.getResources().getString(R.string.tab_overview);
@@ -52,5 +57,14 @@ public class MovieDetailsPagerAdapter extends FragmentPagerAdapter {
                 return mContext.getResources().getString(R.string.tab_reviews);
         }
         return null;
+    }
+
+    public void setMovieAsFav(boolean isFav)
+    {
+        movieDetailFragment.setMovieAsFav(isFav);
+    }
+
+    public void makeText(int stringRes) {
+        movieDetailFragment.makeText(stringRes);
     }
 }

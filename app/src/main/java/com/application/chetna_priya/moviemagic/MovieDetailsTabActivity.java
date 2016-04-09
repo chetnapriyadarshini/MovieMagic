@@ -1,5 +1,6 @@
 package com.application.chetna_priya.moviemagic;
 
+import android.content.res.Configuration;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -8,10 +9,10 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 
-public class MovieDetailsTab extends AppCompatActivity implements ActionBar.TabListener,
-            ViewPager.OnPageChangeListener, MovieDetailFragment.CallBack{
+public class MovieDetailsTabActivity extends AppCompatActivity implements ActionBar.TabListener,
+            ViewPager.OnPageChangeListener, MovieDetailFragment.CallBack, Favorite_dialog_fragment.DialogInterface{
 
-    private static final String LOG_TAG = MovieDetailsTab.class.getSimpleName();
+    private static final String LOG_TAG = MovieDetailsTabActivity.class.getSimpleName();
     private static final String SELECTED_TAB = "selected_tab";
 
     MovieDetailsPagerAdapter mMovieDetailsPagerAdapter;
@@ -57,14 +58,6 @@ public class MovieDetailsTab extends AppCompatActivity implements ActionBar.TabL
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_movie_details, menu);
-        return true;
-    }
-
-
-    @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
         mViewPager.setCurrentItem(tab.getPosition());
         getSupportActionBar().setSelectedNavigationItem(tab.getPosition());
@@ -101,4 +94,17 @@ public class MovieDetailsTab extends AppCompatActivity implements ActionBar.TabL
     public void setActionBarTitle(String movieTitle) {
         getSupportActionBar().setTitle(movieTitle);
     }
+
+    @Override
+    public void setMovieAsFav(boolean isFav) {
+        mMovieDetailsPagerAdapter.setMovieAsFav(isFav);
+    }
+
+    @Override
+    public void makeText(int stringRes) {
+        mMovieDetailsPagerAdapter.makeText(stringRes);
+    }
+
+
+
 }

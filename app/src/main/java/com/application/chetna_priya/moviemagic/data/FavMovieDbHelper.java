@@ -33,7 +33,7 @@ public class FavMovieDbHelper extends SQLiteOpenHelper
 
         final String SQL_CREATE_FAV_MOVIE_TABLE = "CREATE TABLE "+MovieEntry.TABLE_NAME
                 +" (" +MovieEntry._ID+ " INTEGER PRIMARY KEY AUTOINCREMENT, "+
-                MovieEntry.COLUMN_MOVIE_ID +" REAL NOT NULL UNIQUE, "+
+                MovieEntry.COLUMN_MOVIE_ID +" INTEGER NOT NULL UNIQUE, "+
                 MovieEntry.COLUMN_MOVIE_TITLE+" TEXT NOT NULL UNIQUE, "+
                 MovieEntry.COLUMN_MOVIE_POSTER+" BLOB NOT NULL, "+
                 MovieEntry.COLUMN_MOVIE_BACKDROP+" BLOB NOT NULL, "+

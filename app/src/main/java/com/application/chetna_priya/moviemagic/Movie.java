@@ -1,19 +1,15 @@
 package com.application.chetna_priya.moviemagic;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by chetna_priya on 3/7/2016.
  */
 public class Movie implements Parcelable
 {
-
-    private final String BASE_EXT = "http://image.tmdb.org/t/p";
     private int movie_id;
     private String poster_path;
     private String title;
@@ -22,10 +18,8 @@ public class Movie implements Parcelable
     private String plotSynopsis;
     private String backdrop_path;
     private int duration;
-    private final int MOVIE_POSTER = 0;
-    private final int MOVIE_BACKDROP = 1;
-    private static boolean isMarkedFav = false;
-
+    private boolean isMarkedFav = false;
+    private final String BASE_EXT = "http://image.tmdb.org/t/p";
 
     public Movie(int movie_id, String poster_path)
     {
@@ -55,6 +49,27 @@ public class Movie implements Parcelable
         plotSynopsis = in.readString();
         backdrop_path = in.readString();
         duration = in.readInt();
+        isMarkedFav = in.readByte() != 0;
+
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(movie_id);
+        dest.writeString(poster_path);
+        dest.writeString(title);
+        dest.writeString(releaseDate);
+        dest.writeLong(voteAverage);
+        dest.writeString(plotSynopsis);
+        dest.writeString(backdrop_path);
+        dest.writeInt(duration);
+        dest.writeByte((byte) (isMarkedFav ? 1 : 0));
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -75,21 +90,21 @@ public class Movie implements Parcelable
 
     public Uri getMovie_uri() {
         return Uri.parse(BASE_EXT).buildUpon()
-                .appendEncodedPath(getPrefferedSize(MOVIE_POSTER))
+                .appendEncodedPath(getPrefferedSize(Constants.MOVIE_POSTER))
                 .appendEncodedPath(poster_path).build();
     }
 
     public Uri get_movie_backdrop_path_Uri() {
         return Uri.parse(BASE_EXT).buildUpon()
-                .appendEncodedPath(getPrefferedSize(MOVIE_BACKDROP))
+                .appendEncodedPath(getPrefferedSize(Constants.MOVIE_BACKDROP))
                 .appendEncodedPath(backdrop_path).build();
     }
 
-    private String getPrefferedSize(int imgType) {
+    public String getPrefferedSize(int imgType) {
         //Possible Values : "w92", "w154", "w185", "w342", "w500", "w780", or "original"
-        if(imgType == MOVIE_BACKDROP)
+        if(imgType == Constants.MOVIE_BACKDROP)
             return  "original";
-        return "w185";
+        return "w"+Constants.PREFERRED_POSTER_SIZE;
     }
 
     public String getTitle() {
@@ -120,23 +135,6 @@ public class Movie implements Parcelable
         return backdrop_path;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(movie_id);
-        dest.writeString(poster_path);
-        dest.writeString(title);
-        dest.writeString(releaseDate);
-        dest.writeLong(voteAverage);
-        dest.writeString(plotSynopsis);
-        dest.writeString(backdrop_path);
-        dest.writeInt(duration);
-    }
-
     public boolean isMarkedFav() {
         return isMarkedFav;
     }
@@ -148,4 +146,5 @@ public class Movie implements Parcelable
     public void notFav() {
         isMarkedFav = false;
     }
-}
+
+  }

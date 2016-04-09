@@ -1,7 +1,17 @@
 package com.application.chetna_priya.moviemagic;
 
+import android.animation.Animator;
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -10,6 +20,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.application.chetna_priya.moviemagic.data.FavMovieContract;
@@ -28,19 +40,16 @@ public class MovieRecyclerGridAdapter extends CursorRecyclerViewAdapter<MovieRec
     private static final String LOG_TAG = MovieRecyclerGridAdapter.class.getSimpleName();
     private static Context mContext;
     private Cursor mCursor;
-    private final GridLayoutManager mGridLayoutManager;
     private AdapterCallback mCallBack;
-    private int mPos = 0;
-    private static int itemWidth = 0;
     private ArrayList<Movie> mMovieArrayList;
     private static boolean isFavoritesView;
 
-    public MovieRecyclerGridAdapter(Context context, GridLayoutManager gridLayoutManager, Cursor cursor)
+    public MovieRecyclerGridAdapter(Context context, Cursor cursor)
     {
         super(context, cursor);
         mContext = context;
         mCursor = cursor;
-        mGridLayoutManager = gridLayoutManager;
+        mMovieArrayList = new ArrayList<>();
         isFavoritesView = Utility.getSortingChoice(mContext).equals(mContext.getResources().getString(R.string.pref_favorites));
         try {
             mCallBack = (AdapterCallback) mContext;
@@ -58,21 +67,11 @@ public class MovieRecyclerGridAdapter extends CursorRecyclerViewAdapter<MovieRec
     * */
     public interface AdapterCallback
     {
-        void onItemSelected(int movieId);
+        void onItemSelected(ImageView posterView, int movieId);
         void initMovieDetailFragment(int movieid);
     }
 
-    public int getSelectedPos() {
-        return mPos;
-    }
-
-
-    public void setSelectedPos(int mPos) {
-        this.mPos = mPos;
-    }
-
-
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, MyColorAnimator.AnimationEndCallback {
 
         public ImageView posterView;
 
@@ -84,20 +83,21 @@ public class MovieRecyclerGridAdapter extends CursorRecyclerViewAdapter<MovieRec
         }
 
         @Override
-        public void onClick(View view) {
-            int pos = getLayoutPosition();
-            mPos = pos;
+        public void onClick(final View view) {
+            final int colorFrom = mContext.getResources().getColor(android.support.v7.appcompat.R.color.background_material_dark);
+            final int colorTo = mContext.getColor(android.support.v7.appcompat.R.color.background_material_light);
+            ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+            colorAnimation.setDuration(100); // milliseconds
+            MyColorAnimator myColorAnimator = new MyColorAnimator(mContext, colorAnimation, itemView, this);
+            colorAnimation.addUpdateListener(myColorAnimator);
+            colorAnimation.addListener(myColorAnimator);
+            colorAnimation.start();
 
-            //Movie movie =  mCursor.getInt(mCursor.getColumnIndex(FavMovieContract.COLUMN_MOVIE_ID));
-            //TODO Add animation on touch
-            //TODO Scroll to view to the selected position
-            /*if(mCursor != null && mCursor.getCount()> 0)
-                mCallBack.onItemSelected(mCursor.getInt
-                        (FavMovieContract.MovieEntry.COL_INDEX_MOVIE_ID));
-            else {*/
-                mCallBack.onItemSelected(getItem(getLayoutPosition()).getMovie_id());
-           // }
+        }
 
+        @Override
+        public void onAnimationEnd() {
+            mCallBack.onItemSelected(posterView,getItem(getLayoutPosition()).getMovie_id());
         }
     }
 
@@ -126,11 +126,6 @@ public class MovieRecyclerGridAdapter extends CursorRecyclerViewAdapter<MovieRec
                 .into(viewHolder.posterView, new Callback() {
                     @Override
                     public void onSuccess() {
-                        if(itemWidth == 0)//We only need to calculate it once as all posters are to be of same size
-                        {
-                            itemWidth = viewHolder.posterView.getMeasuredWidth();
-                            mGridLayoutManager.setSpanCount(getSpanCount());
-                        }
                     }
 
                     @Override
@@ -143,22 +138,6 @@ public class MovieRecyclerGridAdapter extends CursorRecyclerViewAdapter<MovieRec
                         }
                     }
                 });
-    }
-
-
-
-    public int getSpanCount() {
-        DisplayMetrics  displayMetrics = new DisplayMetrics();
-        WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
-        wm.getDefaultDisplay().getMetrics(displayMetrics);
-        int displayWidth = displayMetrics.widthPixels;
-        Log.d(LOG_TAG, "SCREEN WIDTH: " + displayWidth + " IMAGE WIDTH: " + itemWidth);
-        if(itemWidth == 0)
-        {
-            Log.d(LOG_TAG, "Images are still not loaded");
-            return Constants.DEFAULT_SPAN_COUNT;//return default span count
-        }
-        return (int) Math.floor(displayWidth/itemWidth);
     }
 
     public Movie getItem(int position)
@@ -176,6 +155,13 @@ public class MovieRecyclerGridAdapter extends CursorRecyclerViewAdapter<MovieRec
     }
 
     @Override
+    public long getItemId(int position) {
+        if(mMovieArrayList != null)
+            return mMovieArrayList.get(position).getMovie_id();
+        return super.getItemId(position);
+    }
+
+    @Override
     public int getItemCount()
     {
         if(mMovieArrayList != null)
@@ -185,11 +171,14 @@ public class MovieRecyclerGridAdapter extends CursorRecyclerViewAdapter<MovieRec
     }
 
 
-    public void setData(ArrayList<Movie> data)
+    public void addData(ArrayList<Movie> data)
     {
-        mMovieArrayList = data;
+        if(data == null)
+            mMovieArrayList = null;
+        else if(data.size() > 0) {
+            mMovieArrayList.addAll(data);
         /* Inflate the detail fragment for first movie if no selction has been made for a two pane layout*/
-        if(data != null)
             mCallBack.initMovieDetailFragment(data.get(0).getMovie_id());
+        }
     }
 }

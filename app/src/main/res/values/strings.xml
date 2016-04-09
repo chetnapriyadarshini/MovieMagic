@@ -39,8 +39,8 @@
     <string name="something_went_wrong">Addition unsucessful please try again in sometime</string>
     <string name="added_to_fav_succesfully">Movie added to favorites successfully, view it any time by selecting fav movies in menu</string>
     <string name="movie_already_marked_as_fav">This movie is already added to your fav list</string>
-    <string name="add_to_fav">Mark as\n Favorite</string>
-    <string name="remove_from_fav">Remove from\n Favorite</string>
+    <string name="add_to_fav">Love this movie! Add it to your favorites.</string>
+    <string name="remove_from_fav">This movie is in your favorite list. Do you want to remove it?</string>
     <string name="content_authority">com.application.chetna_priya.moviemagic</string>
     <string name="movie_could_not_added">Movie could not be added. Please try again in sometime.</string>
     <string name="title_overview">Overview:</string>
@@ -49,5 +49,12 @@
     <string name="minute">minute</string>
     <string name="yes">YES</string>
     <string name="back">BACK</string>
+    <string name="movie_removed_successfully">Movie removed successfully from your favorites database.</string>
+    <string name="pref_total_pages">total_pages</string>
+    <string name="action_share">Share</string>
+    <string name="try_again">TRY AGAIN</string>
+    <string name="not_connected">You are not connected to the internet, please connect and try again</string>
+    <string name="database_empty">There are no movies in your favorites list. Launch Top Rated/ Popular movies ?</string>
+    <string name="ok">OK</string>
 
 </resources>
