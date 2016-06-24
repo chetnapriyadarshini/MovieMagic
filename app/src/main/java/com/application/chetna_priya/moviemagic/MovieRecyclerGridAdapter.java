@@ -9,9 +9,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.v7.graphics.Palette;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -28,6 +31,8 @@ import com.application.chetna_priya.moviemagic.data.FavMovieContract;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import static android.widget.ImageView.ScaleType.CENTER_CROP;
@@ -74,11 +79,12 @@ public class MovieRecyclerGridAdapter extends CursorRecyclerViewAdapter<MovieRec
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, MyColorAnimator.AnimationEndCallback {
 
         public ImageView posterView;
-
+        public CardView cardView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             posterView = (ImageView) itemView.findViewById(R.id.img_movie_image);
+            cardView = (CardView) itemView.findViewById(R.id.card_view);
             posterView.setOnClickListener(this);
         }
 
@@ -116,7 +122,7 @@ public class MovieRecyclerGridAdapter extends CursorRecyclerViewAdapter<MovieRec
 
         viewHolder.posterView.setScaleType(CENTER_CROP);
         final Movie movie = getItem(position);
-
+        final Bitmap[] movieBitmap = new Bitmap[1];
         Picasso.with(mContext) //
                 .load(movie.getMovie_uri())  //
                 .placeholder(R.drawable.placeholder)
@@ -126,18 +132,34 @@ public class MovieRecyclerGridAdapter extends CursorRecyclerViewAdapter<MovieRec
                 .into(viewHolder.posterView, new Callback() {
                     @Override
                     public void onSuccess() {
+
+                            BitmapDrawable bitmapDrawable = (BitmapDrawable) viewHolder.posterView.getDrawable();
+                            movieBitmap[0] = bitmapDrawable.getBitmap();
                     }
 
                     @Override
                     public void onError() {
-                        Log.d(LOG_TAG, "Could not load movie from databse, will try loading from cursor");
+                        Log.d(LOG_TAG, "Could not load movie from internet, will try loading from cursor");
                         if(isFavoritesView)//movie exists in the database we inflate it from there
                         {
-                            viewHolder.posterView.setImageBitmap(Utility.getMoviePosterById(
-                                    FavMovieContract.MovieEntry.COL_INDEX_MOVIE_POSTER, mCursor));
+                            movieBitmap[0] = Utility.getMoviePosterById(
+                                    FavMovieContract.MovieEntry.COL_INDEX_MOVIE_POSTER, mCursor);
+                            viewHolder.posterView.setImageBitmap(movieBitmap[0]);
                         }
                     }
                 });
+
+        if(movieBitmap[0] != null){
+            Palette.from(movieBitmap[0]).generate(new Palette.PaletteAsyncListener() {
+                @Override
+                public void onGenerated(Palette palette) {
+                    int color = palette.getDarkVibrantColor(Color.WHITE);
+                    Log.d(LOG_TAG, "Pallete color: "+color);
+                   viewHolder.cardView.setCardBackgroundColor(color);
+                }
+            });
+        }else
+            Log.d(LOG_TAG, "Movie Bitmap NUllllllllllllll");
     }
 
     public Movie getItem(int position)
