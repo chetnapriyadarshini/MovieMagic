@@ -56,5 +56,6 @@
     <string name="not_connected">You are not connected to the internet, please connect and try again</string>
     <string name="database_empty">There are no movies in your favorites list. Launch Top Rated/ Popular movies ?</string>
     <string name="ok">OK</string>
+    <string name="movie_poster_transition" translatable="false">transition_movie_poster</string>
 
 </resources>

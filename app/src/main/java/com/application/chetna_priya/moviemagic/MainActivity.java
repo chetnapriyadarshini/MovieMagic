@@ -129,8 +129,9 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerGrid
             detailIntent = new Intent(this, MovieDetailsTabActivity.class);
             detailIntent.putExtra(Constants.MOVIE_ID, movieId);
 
-            Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(this
+                       /* posterView, posterView.getTransitionName()*/).toBundle();
                 startActivity(detailIntent, bundle);
             }else
                 startActivity(detailIntent);

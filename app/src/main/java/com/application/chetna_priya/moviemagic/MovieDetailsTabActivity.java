@@ -1,12 +1,16 @@
 package com.application.chetna_priya.moviemagic;
 
 import android.content.res.Configuration;
+import android.os.Build;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.transition.Slide;
+import android.transition.TransitionInflater;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 
 public class MovieDetailsTabActivity extends AppCompatActivity implements ActionBar.TabListener,
@@ -22,6 +26,12 @@ public class MovieDetailsTabActivity extends AppCompatActivity implements Action
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_movie_details);
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Slide slide = (Slide) TransitionInflater.from(this).inflateTransition(R.transition.movie_details_enter);
+            slide.setSlideEdge(Gravity.TOP);
+            slide.addTarget(R.id.movie_detail_layout);
+            getWindow().setEnterTransition(slide);
+        }*/
 
         // Create the adapter that will return a fragment for each primary section of the activity.
         mMovieDetailsPagerAdapter = new MovieDetailsPagerAdapter(getSupportFragmentManager(),
