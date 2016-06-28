@@ -1,7 +1,9 @@
 package com.application.chetna_priya.moviemagic;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -126,7 +128,14 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerGrid
             Intent detailIntent;
             detailIntent = new Intent(this, MovieDetailsTabActivity.class);
             detailIntent.putExtra(Constants.MOVIE_ID, movieId);
-            startActivity(detailIntent);
+
+            Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                startActivity(detailIntent, bundle);
+            }else
+                startActivity(detailIntent);
+
+
         }
     }
 
